@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.LocaleList
 import android.util.AttributeSet
+import com.jcminarro.philology.Resource.Text
 import com.nhaarman.mockito_kotlin.doAnswer
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.doThrow
@@ -40,7 +41,7 @@ fun clearPhilology() {
 
 fun createRepository(nameId: String, text: CharSequence): PhilologyRepository =
         object : PhilologyRepository {
-            override fun getText(key: String): CharSequence? = text.takeIf {key == nameId}
+            override fun get(resource: Resource): CharSequence? = text.takeIf {resource is Text && resource.key == nameId}
         }
 
 fun createFactory(vararg repositoryPairs: Pair<Locale, PhilologyRepository>): PhilologyRepositoryFactory =
