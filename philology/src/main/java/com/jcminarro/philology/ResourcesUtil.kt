@@ -20,17 +20,17 @@ internal class ResourcesUtil(private val baseResources: Resources) {
     fun getQuantityText(id: Int, quantity: Int) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         val plural = PluralRules.forLocale(baseResources.currentLocale()).select(quantity.toDouble())
         repository.get(Resource.Plural(baseResources.getResourceEntryName(id), PluralQuantity.from(plural))) ?: baseResources.getQuantityText(id, quantity)
-    } else throw Resources.NotFoundException()
+    } else baseResources.getQuantityText(id, quantity)
 
     @Throws(Resources.NotFoundException::class)
     fun getQuantityString(id: Int, quantity: Int) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         getQuantityText(id, quantity).toString()
-    } else throw Resources.NotFoundException()
+    } else baseResources.getQuantityText(id, quantity).toString()
 
     @Throws(Resources.NotFoundException::class)
     fun getQuantityString(id: Int, quantity: Int, vararg formatArgs: Any?): String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         String.format(getQuantityString(id, quantity), *formatArgs)
-    } else throw Resources.NotFoundException()
+    } else baseResources.getQuantityString(id, quantity, *formatArgs)
 }
 
 interface PhilologyRepository {
